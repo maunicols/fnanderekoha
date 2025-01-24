@@ -1,0 +1,12 @@
+{% extends "landing/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  
+  <div class="content-section w-50 maxh container">
+    <h2>Cerraste tu sesion anterior</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">Quiero ingresar otra vez </small>
+        <a href={% url 'login' %} class="me-3">Iniciar Sesión</a>
+    </div> 
+  </div>
+{% endblock content %}
