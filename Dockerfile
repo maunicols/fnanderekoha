@@ -12,6 +12,7 @@ COPY requirements.txt .
 
 # Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
+RUN python manage.py collectstatic
 
 # Copia todo el contenido de la carpeta raíz del proyecto al directorio de trabajo
 COPY . .
@@ -20,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Define el comando por defecto para correr la aplicación
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "fundacionnanderekoha.wsgi", "-p", "0.0.0.0:8000"]
