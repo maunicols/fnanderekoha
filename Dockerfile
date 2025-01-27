@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Define el comando por defecto para correr la aplicación
-CMD ["gunicorn", "fundacionnanderekoha.wsgi", "-p", "0.0.0.0:8000"]
+CMD ["gunicorn", "fundacionnanderekoha.wsgi:application", "-p", "0.0.0.0:8000"]
