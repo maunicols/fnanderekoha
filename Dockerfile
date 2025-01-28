@@ -6,7 +6,7 @@ RUN apk add --no-cache gcc musl-dev libffi-dev
 
 # Establece el directorio de trabajo en /app
 WORKDIR /app
-
+COPY . .
 # Copia el archivo requirements.txt al directorio de trabajo
 COPY requirements.txt .
 
