@@ -11,3 +11,4 @@ pillow==11.1.0
 python-dotenv==1.0.1
 soupsieve==2.6
 sqlparse==0.5.3
+whitenoise==6.9.0

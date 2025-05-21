@@ -1,12 +1,31 @@
 services:
   web:
-    image: registry.gitlab.com/maunicols/fnanderekoha
+    build: 
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - .:/app
+      - ./staticfiles:/app/staticfiles
+      - ./media:/app/media
+      - ./static:/app/static
     ports:
       - "8000:8000"
+    environment:
+      - DEBUG=0
+      - DJANGO_SETTINGS_MODULE=fundacionnanderekoha.settings
+      - PYTHONUNBUFFERED=1
+      - SECRET_KEY=change_me_in_production
+    restart: unless-stopped
+    command: gunicorn fundacionnanderekoha.wsgi:application --bind 0.0.0.0:8000 --workers 3
 
-
-volumes:
-  .:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./staticfiles:/usr/share/nginx/html/static
+      - ./media:/usr/share/nginx/html/media
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    restart: unless-stopped
   

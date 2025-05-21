@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,7 +11,7 @@
     <meta name="author" content="Fundación Ñande reko Ha" />
     <meta
       name="keywords"
-      content="fundacion,Posadas,Misiones,sordos, discapacidad, inclusión, LSA, asesoramiento, ayuda, donar "/>
+      content="Fundación,Posadas,Misiones,sordos, discapacidad, inclusión, LSA, asesoramiento, ayuda, donar "/>
     <link
       rel="icon"
       href="{% static 'favicon.svg' %}"
@@ -35,7 +34,7 @@
       
       <nav id="navbar" class="navbar navbar-expand-lg mb-4 pt-3 pb-3 text-dark border-bottom border-1 bg-light" data-bs-theme="light">
       <div class="container ">
-        <a class="navbar-brand d-block fs-2 text-dark fw-bold pe-3 border-end border-1" href={% url "landing-home" %}>
+        <a class="navbar-brand d-block fs-2 text-dark fw-bold pe-3 border-end border-1" href={% url 'landing-home' %}>
           <img
             src="{% static 'favicon.svg' %}"
             alt="Logo"
@@ -112,7 +111,7 @@
               <a 
                 class="nav-link text-dark disabled active align-text-center fs-6"
                 aria-current="page"
-                href={% url 'profile' %}
+                href={% url "profile" %}
                 >Mi perfil</a>
               </li>
             <li>

@@ -1,24 +1,40 @@
 # Usa una imagen base oficial de Python en Alpine Linux
 FROM python:3.9-alpine
 
-# Instala las dependencias del sistema
-RUN apk add --no-cache gcc musl-dev libffi-dev
+# Establece variables de entorno
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=fundacionnanderekoha.settings
 
-# Establece el directorio de trabajo en /app
+# Establece el directorio de trabajo
 WORKDIR /app
-COPY . .
-# Copia el archivo requirements.txt al directorio de trabajo
+
+# Instala las dependencias del sistema
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    postgresql-dev
+
+# Copia requirements e instala dependencias
 COPY requirements.txt .
-
-# Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
-RUN python manage.py collectstatic
 
-# Copia todo el contenido de la carpeta raíz del proyecto al directorio de trabajo
+# Copia el código de la aplicación
 COPY . .
 
-# Expone el puerto en el que correrá la aplicación Django
+# Crea y configura el usuario no root
+RUN adduser -D appuser && \
+    chown -R appuser:appuser /app
+
+# Cambia al usuario no root
+USER appuser
+
+# Recolecta archivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Expone el puerto
 EXPOSE 8000
 
-# Define el comando por defecto para correr la aplicación
-CMD ["gunicorn", "fundacionnanderekoha.wsgi:application", "-p", "0.0.0.0:8000"]
+# Define el comando por defecto
+CMD ["gunicorn", "fundacionnanderekoha.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]
