@@ -1,6 +1,6 @@
 static/
 staticfiles/
 media/
-db.qlite3
+db.sqlite3
 
 
