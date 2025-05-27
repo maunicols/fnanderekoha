@@ -1,0 +1,92 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Panel Principal{% endblock %}
+
+{% block dashboard_content %}
+<div class="row mb-4">
+    <!-- Estadísticas -->
+    <div class="col-md-6 col-lg-3 mb-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Total Actividades</h5>
+                <p class="card-text display-6">{{ total_activities }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Total Participantes</h5>
+                <p class="card-text display-6">{{ total_participants }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actividades Próximas -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h3>Actividades Próximas</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in upcoming_activities %}
+                    <tr>
+                        <td>{{ activity.title }}</td>
+                        <td>{{ activity.get_activity_type_display }}</td>
+                        <td>{{ activity.date|date:"d/m/Y H:i" }}</td>
+                        <td><span class="badge bg-primary">{{ activity.get_status_display }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay actividades próximas programadas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Actividades en Curso -->
+<div class="row">
+    <div class="col-12">
+        <h3>Actividades en Curso</h3>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Ubicación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in ongoing_activities %}
+                    <tr>
+                        <td>{{ activity.title }}</td>
+                        <td>{{ activity.get_activity_type_display }}</td>
+                        <td>{{ activity.date|date:"d/m/Y H:i" }}</td>
+                        <td>{{ activity.location }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No hay actividades en curso</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Eliminar Actividad{% endblock %}
+
+{% block dashboard_content %}
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-danger">¿Estás seguro de que deseas eliminar esta actividad?</h5>
+                <p class="card-text">
+                    <strong>Título:</strong> {{ activity.title }}<br>
+                    <strong>Tipo:</strong> {{ activity.get_activity_type_display }}<br>
+                    <strong>Fecha:</strong> {{ activity.date|date:"d/m/Y H:i" }}<br>
+                    <strong>Participantes:</strong> {{ activity.participants.count }}
+                </p>
+                <div class="alert alert-warning">
+                    Esta acción no se puede deshacer y eliminará todos los registros de participantes asociados.
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <a href="{% url 'dashboard:activity-list' %}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

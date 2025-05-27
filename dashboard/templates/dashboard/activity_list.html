@@ -1,0 +1,78 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block dashboard_title %}Actividades{% endblock %}
+
+{% block dashboard_content %}
+{% if is_admin %}
+<div class="mb-3">
+    <a href="{% url 'dashboard:activity-create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nueva Actividad
+    </a>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Ubicación</th>
+                        <th>Participantes</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for activity in activities %}
+                    <tr>
+                        <td>{{ activity.title }}</td>
+                        <td>{{ activity.get_activity_type_display }}</td>
+                        <td>{{ activity.date|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <span class="badge {% if activity.status == 'PROGRAMADA' %}bg-primary
+                                             {% elif activity.status == 'EN_CURSO' %}bg-success
+                                             {% elif activity.status == 'COMPLETADA' %}bg-secondary
+                                             {% else %}bg-danger{% endif %}">
+                                {{ activity.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ activity.location }}</td>
+                        <td>{{ activity.participants.count }}</td>
+                        <td>
+                            {% if is_admin %}
+                            <div class="btn-group">
+                                <a href="{% url 'dashboard:activity-edit' activity.pk %}" 
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'dashboard:activity-delete' activity.pk %}" 
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center">No hay actividades registradas</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        {% with page_obj=activities %}
+            {% include 'dashboard/includes/pagination.html' %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
