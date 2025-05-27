@@ -4,16 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./staticfiles:/app/staticfiles
-      - ./media:/app/media
-      - ./static:/app/static
+      - .:/app
     ports:
       - "8000:8000"
     environment:
-      - DEBUG=0
+      - DEBUG=1
       - DJANGO_SETTINGS_MODULE=fundacionnanderekoha.settings
       - PYTHONUNBUFFERED=1
-      - SECRET_KEY=change_me_in_production
+      - SECRET_KEY=dev_secret_key
     restart: unless-stopped
     command: gunicorn fundacionnanderekoha.wsgi:application --bind 0.0.0.0:8000 --workers 3
 

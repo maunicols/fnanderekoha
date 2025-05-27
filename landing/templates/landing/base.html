@@ -89,14 +89,14 @@
               >
               <ul class="dropdown-menu ">
                 <li>
-                  <a class="dropdown-item" href="#mision">Misión</a>
+                  <a class="dropdown-item" href="{% url 'landing-home' %}#mision">Misión</a>
                 </li>
                 
                 <li>
-                  <a class="dropdown-item" href="#objetivos">Objetivo</a>
+                  <a class="dropdown-item" href="{% url 'landing-home' %}#objetivos">Objetivo</a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#equipo">Equipo</a>
+                  <a class="dropdown-item" href="{% url 'landing-home' %}#equipo">Equipo</a>
                 </li>
                 <li>
                   <hr class="dropdown-divider" />
@@ -109,7 +109,7 @@
             {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a 
-                class="nav-link text-dark disabled active align-text-center fs-6"
+                class="nav-link text-dark  active align-text-center fs-6"
                 aria-current="page"
                 href={% url "profile" %}
                 >Mi perfil</a>

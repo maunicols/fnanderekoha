@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rye+1+0np^6080(_8zza^2w5((7fwjkjou==6s^09-24(l!zzz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']  # Ajusta esto según tu dominio
 
@@ -139,10 +139,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Auth settings
+LOGIN_REDIRECT_URL = 'landing-home'
+LOGIN_URL = 'login'
