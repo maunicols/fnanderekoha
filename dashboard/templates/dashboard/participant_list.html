@@ -1,42 +1,82 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 
-{% block dashboard_title %}Participantes{% endblock %}
+{% block dashboard_title %}
+    {% if activity %}
+        Participantes - {{ activity.title }}
+    {% else %}
+        Todos los Participantes
+    {% endif %}
+{% endblock %}
 
 {% block dashboard_content %}
+{% csrf_token %}
 <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+            {% if activity %}
+                <i class="bi bi-people"></i> Participantes de {{ activity.title }}
+                <span class="badge bg-secondary ms-2">{{ activity.get_status_display }}</span>
+            {% else %}
+                <i class="bi bi-people"></i> Todos los Participantes
+            {% endif %}
+        </h5>
+        <a href="{% url 'dashboard:activity-list' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Volver a Actividades
+        </a>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Actividad</th>
+                        {% if not activity %}<th>Actividad</th>{% endif %}
                         <th>Email</th>
                         <th>Teléfono</th>
-                        <th>Confirmado</th>
+                        <th>Estado</th>
                         <th>Fecha de Registro</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for participant in participants %}
                     <tr>
-                        <td>{{ participant.name }}</td>
-                        <td>{{ participant.activity.title }}</td>
+                        <td>
+                            {{ participant.name }}
+                            {% if participant.user and participant.user.perfiles.is_foundation_member %}
+                                <span class="badge bg-info ms-2">Miembro</span>
+                            {% endif %}
+                        </td>
+                        {% if not activity %}
+                            <td>
+                                <a href="{% url 'dashboard:participant-list' %}?activity={{ participant.activity.pk }}">
+                                    {{ participant.activity.title }}
+                                </a>
+                            </td>
+                        {% endif %}
                         <td>{{ participant.email|default:"-" }}</td>
                         <td>{{ participant.phone|default:"-" }}</td>
                         <td>
-                            {% if participant.attendance_confirmed %}
-                            <span class="badge bg-success">Confirmado</span>
+                            {% if is_foundation_member or is_admin %}
+                                <button class="btn btn-sm {% if participant.attendance_confirmed %}btn-success{% else %}btn-warning{% endif %} attendance-toggle"
+                                        data-participant-id="{{ participant.id }}"
+                                        data-current-status="{{ participant.attendance_confirmed|yesno:'true,false' }}">
+                                    <i class="bi {% if participant.attendance_confirmed %}bi-check-circle{% else %}bi-clock{% endif %}"></i>
+                                    {{ participant.attendance_confirmed|yesno:"Confirmado,Pendiente" }}
+                                </button>
                             {% else %}
-                            <span class="badge bg-warning">Pendiente</span>
+                                <span class="badge {% if participant.attendance_confirmed %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ participant.attendance_confirmed|yesno:"Confirmado,Pendiente" }}
+                                </span>
                             {% endif %}
                         </td>
                         <td>{{ participant.created_at|date:"d/m/Y H:i" }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" class="text-center">No hay participantes registrados</td>
+                        <td colspan="{% if activity %}5{% else %}6{% endif %}" class="text-center">
+                            No hay participantes registrados
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -49,4 +89,67 @@
         {% endwith %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    $('.attendance-toggle').on('click', function(e) {
+        e.preventDefault();
+        const $button = $(this);
+        const participantId = $button.data('participant-id');
+        const currentStatus = $button.data('current-status') === true;
+        
+        if (confirm('¿Estás seguro de que deseas ' + 
+                 (currentStatus ? 'desmarcar' : 'confirmar') + 
+                 ' la asistencia de este participante?')) {
+            
+            // Deshabilitar el botón mientras se procesa
+            $button.prop('disabled', true);
+            
+            $.ajax({
+                url: '{% url "dashboard:confirm-attendance" participant_id=999 %}'.replace('999', participantId),
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val()
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({ 
+                    confirmed: !currentStatus 
+                }),
+                success: function(data) {
+                    if (data.success) {
+                        const confirmedStatus = data.confirmed;
+                        
+                        // Actualizar el estado en el dataset
+                        $button.data('current-status', confirmedStatus);
+                        
+                        // Actualizar las clases
+                        if (confirmedStatus) {
+                            $button.removeClass('btn-warning').addClass('btn-success');
+                        } else {
+                            $button.removeClass('btn-success').addClass('btn-warning');
+                        }
+                        
+                        // Actualizar el ícono y texto
+                        const newIcon = confirmedStatus ? 'bi-check-circle' : 'bi-clock';
+                        const newText = confirmedStatus ? 'Confirmado' : 'Pendiente';
+                        $button.html(`<i class="bi ${newIcon}"></i> ${newText}`);
+                    } else {
+                        alert('Error al actualizar la asistencia: ' + (data.message || 'Error desconocido'));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Error al actualizar la asistencia');
+                },
+                complete: function() {
+                    // Re-habilitar el botón después de procesar
+                    $button.prop('disabled', false);
+                }
+            });
+        }
+    });
+});
+</script>
 {% endblock %}

@@ -34,6 +34,12 @@ class Activity(models.Model):
         null=True,
         related_name='activities_created'
     )
+    attendance_managers = models.ManyToManyField(
+        User,
+        related_name='managed_activities',
+        verbose_name='Gestores de Asistencia',
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Actividad'
@@ -43,18 +49,33 @@ class Activity(models.Model):
     def __str__(self):
         return f"{self.get_activity_type_display()} - {self.title}"
 
+    def can_manage_attendance(self, user):
+        return (user.perfiles.is_foundation_member or 
+                user in self.attendance_managers.all() or 
+                user == self.created_by)
+
+    def is_open_for_enrollment(self):
+        return self.status in ['PROGRAMADA', 'EN_CURSO']
+
+    def has_available_capacity(self):
+        return not self.capacity or self.participants.count() < self.capacity
+
 class Participant(models.Model):
     activity = models.ForeignKey(
         Activity,
         on_delete=models.CASCADE,
         related_name='participants'
     )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='participations'
+    )
     name = models.CharField('Nombre', max_length=200)
     email = models.EmailField('Correo Electrónico', blank=True)
     phone = models.CharField('Teléfono', max_length=20, blank=True)
     attendance_confirmed = models.BooleanField('Asistencia Confirmada', default=False)
     notes = models.TextField('Notas', blank=True)
-    
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -64,3 +85,9 @@ class Participant(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.activity.title}"
+    
+    def is_foundation_member(self):
+        """
+        Retorna True si el participante es miembro de la fundación
+        """
+        return hasattr(self.user, 'perfiles') and self.user.perfiles.is_foundation_member

@@ -19,3 +19,14 @@ class ActivityForm(forms.ModelForm):
         if date and date < timezone.now():
             raise forms.ValidationError("La fecha no puede ser anterior a la actual")
         return date
+
+class EnrollmentForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ['phone']
+        widgets = {
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ingrese su número de teléfono'
+            })
+        }

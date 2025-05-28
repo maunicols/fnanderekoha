@@ -9,5 +9,9 @@ urlpatterns = [
     path('actividades/nueva/', views.activity_create, name='activity-create'),
     path('actividades/<int:pk>/editar/', views.activity_edit, name='activity-edit'),
     path('actividades/<int:pk>/eliminar/', views.activity_delete, name='activity-delete'),
+    path('actividades/<int:pk>/enlistarse/', views.activity_enroll, name='activity-enroll'),
+    path('actividades/<int:pk>/desenlistarse/', views.activity_unenroll, name='activity-unenroll'),
     path('participantes/', views.participant_list, name='participant-list'),
+    path('actividades/<int:pk>/cambiar-estado/', views.activity_change_status, name='activity-change-status'),
+    path('participantes/<int:participant_id>/confirmar/', views.confirm_attendance, name='confirm-attendance'),
 ]

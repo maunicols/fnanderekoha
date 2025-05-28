@@ -42,22 +42,83 @@
                             </span>
                         </td>
                         <td>{{ activity.location }}</td>
-                        <td>{{ activity.participants.count }}</td>
                         <td>
-                            {% if is_admin %}
-                            <div class="btn-group">
-                                <a href="{% url 'dashboard:activity-edit' activity.pk %}" 
-                                   class="btn btn-sm btn-outline-primary"
-                                   title="Editar">
-                                    <i class="bi bi-pencil"></i>
+                            <div class="d-flex align-items-center">
+                                <a href="{% url 'dashboard:participant-list' %}?activity={{ activity.pk }}" 
+                                   class="text-decoration-none" 
+                                   title="Ver participantes">
+                                    {{ activity.participants.count }}{% if activity.capacity %}/{{ activity.capacity }}{% endif %}
                                 </a>
-                                <a href="{% url 'dashboard:activity-delete' activity.pk %}" 
-                                   class="btn btn-sm btn-outline-danger"
-                                   title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </a>
+                                {% if activity.capacity and activity.participants.count >= activity.capacity %}
+                                    <span class="badge bg-danger ms-2">Llena</span>
+                                {% endif %}
                             </div>
-                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                {% if is_admin %}
+                                    <a href="{% url 'dashboard:activity-edit' activity.pk %}" 
+                                       class="btn btn-sm btn-outline-primary me-1"
+                                       title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'dashboard:activity-delete' activity.pk %}" 
+                                       class="btn btn-sm btn-outline-danger me-1"
+                                       title="Eliminar"
+                                       onclick="return confirm('¿Estás seguro de que deseas eliminar esta actividad?');">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                {% endif %}
+
+                                {% if is_foundation_member or is_admin %}
+                                    <a href="{% url 'dashboard:participant-list' %}?activity={{ activity.pk }}" 
+                                       class="btn btn-sm btn-info me-2"
+                                       title="Gestionar participantes">
+                                        <i class="bi bi-people"></i>
+                                        <span class="d-none d-md-inline">Participantes</span>
+                                    </a>
+                                {% endif %}
+
+                                {% if is_foundation_member %}
+                                    <select class="form-select form-select-sm status-select me-2" 
+                                            style="width: auto;"
+                                            data-activity-id="{{ activity.pk }}"
+                                            title="Cambiar estado">
+                                        {% for status, label in activity.STATUS_CHOICES %}
+                                            <option value="{{ status }}" {% if activity.status == status %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+
+                                {% if activity.is_open_for_enrollment %}
+                                    {% if activity.pk in user_activities %}
+                                        <a href="{% url 'dashboard:activity-unenroll' activity.pk %}" 
+                                           class="btn btn-sm btn-warning"
+                                           title="Cancelar inscripción"
+                                           onclick="return confirm('¿Estás seguro de que deseas cancelar tu inscripción?');">
+                                            <i class="bi bi-person-dash"></i>
+                                            <span class="d-none d-md-inline">Cancelar</span>
+                                        </a>
+                                    {% else %}
+                                        {% if activity.has_available_capacity %}
+                                            <a href="{% url 'dashboard:activity-enroll' activity.pk %}" 
+                                               class="btn btn-sm btn-success"
+                                               title="Inscribirse">
+                                                <i class="bi bi-person-plus"></i>
+                                                <span class="d-none d-md-inline">Inscribirse</span>
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-sm btn-secondary" disabled 
+                                                    title="La actividad está llena">
+                                                <i class="bi bi-person-x"></i>
+                                                <span class="d-none d-md-inline">Llena</span>
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                     {% empty %}
@@ -75,4 +136,54 @@
         {% endwith %}
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Handle status changes
+    const statusSelects = document.querySelectorAll('.status-select');
+    statusSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            const activityId = this.dataset.activityId;
+            const newStatus = this.value;
+            
+            if (confirm('¿Estás seguro de que deseas cambiar el estado de esta actividad?')) {
+                fetch(`/dashboard/actividades/${activityId}/cambiar-estado/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Reload page to update status badges and buttons
+                        location.reload();
+                    } else {
+                        alert('Error al actualizar el estado: ' + (data.message || 'Error desconocido'));
+                        // Reset select to previous value
+                        this.value = this.getAttribute('data-previous-value');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al actualizar el estado');
+                    // Reset select to previous value
+                    this.value = this.getAttribute('data-previous-value');
+                });
+            } else {
+                // User canceled, reset the select
+                this.value = this.getAttribute('data-previous-value');
+            }
+        });
+
+        // Store initial value
+        select.setAttribute('data-previous-value', select.value);
+    });
+});</script>
 {% endblock %}
