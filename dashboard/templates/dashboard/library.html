@@ -1,0 +1,84 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block dashboard_title %}Biblioteca de Documentos{% endblock %}
+
+{% block dashboard_content %}
+<div class="container">
+    {% if can_upload %}
+    <div class="mb-4">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+            <i class="bi bi-upload"></i> Subir Documento
+        </button>
+    </div>
+
+    <!-- Modal de subida -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel">Subir Documento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'dashboard:upload-document' %}" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Subir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% for activity in activities %}
+        {% if activity.files.all %}
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">{{ activity.title }} - {{ activity.get_activity_type_display }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Archivo</th>
+                                    <th>Descripción</th>
+                                    <th>Subido por</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in activity.files.all %}
+                                    <tr>
+                                        <td>{{ file.title }}</td>
+                                        <td>{{ file.description|truncatewords:30 }}</td>
+                                        <td>{{ file.uploaded_by.username }}</td>
+                                        <td>{{ file.uploaded_at|date:"d/m/Y H:i" }}</td>
+                                        <td>
+                                            <a href="{% url 'dashboard:download-document' file.id %}" 
+                                               class="btn btn-sm btn-success">
+                                                <i class="fas fa-download"></i> Descargar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% empty %}
+        <div class="alert alert-info">
+            No hay archivos disponibles en la biblioteca.
+        </div>
+    {% endfor %}
+</div>
+{% endblock dashboard_content %}

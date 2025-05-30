@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 from .decorators import foundation_member_required, admin_required
-from .models import Activity, Participant
-from .forms import ActivityForm, EnrollmentForm
+from .models import Activity, Participant, ActivityFile
+from .forms import ActivityForm, EnrollmentForm, ActivityFileForm, DocumentUploadForm
 from django.utils import timezone
 import json
+import os
 
 @login_required
 def dashboard_home(request):
@@ -281,3 +282,59 @@ def confirm_attendance(request, participant_id):
         'success': False,
         'message': 'Método no permitido'
     }, status=405)
+
+@login_required
+def library_view(request):
+    """Vista de la biblioteca de documentos."""
+    activities = Activity.objects.prefetch_related('files').order_by('-date')
+    
+    if request.user.perfiles.is_foundation_member:
+        form = DocumentUploadForm()
+    else:
+        form = None
+    
+    return render(request, 'dashboard/library.html', {
+        'activities': activities,
+        'can_upload': request.user.perfiles.is_foundation_member,
+        'form': form,
+    })
+
+@login_required
+@foundation_member_required
+def upload_document(request):
+    """Vista para subir documentos."""
+    if request.method == 'POST':
+        form = DocumentUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.uploaded_by = request.user
+            document.save()
+            messages.success(request, 'Documento subido exitosamente.')
+            return redirect('dashboard:library')
+        else:
+            messages.error(request, 'Error al subir el documento.')
+            return redirect('dashboard:library')
+    return redirect('dashboard:library')
+
+@login_required
+def download_document(request, file_id):
+    """Vista para descargar documentos."""
+    document = get_object_or_404(ActivityFile, pk=file_id)
+    try:
+        response = FileResponse(document.file)
+        response['Content-Disposition'] = f'attachment; filename="{document.file.name}"'
+        return response
+    except Exception as e:
+        messages.error(request, 'Error al descargar el archivo.')
+        return redirect('dashboard:library')
+
+@login_required
+def activity_detail(request, pk):
+    """Vista detallada de una actividad."""
+    activity = get_object_or_404(Activity, pk=pk)
+    
+    context = {
+        'activity': activity,
+        'is_enrolled': Participant.objects.filter(activity=activity, user=request.user).exists(),
+    }
+    return render(request, 'dashboard/activity_detail.html', context)

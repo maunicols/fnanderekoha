@@ -2,6 +2,37 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+class ActivityFile(models.Model):
+    file = models.FileField(
+        'Archivo',
+        upload_to='activity_files/%Y/%m/%d/',
+        help_text='Subir archivos relacionados con la actividad'
+    )
+    title = models.CharField('Título', max_length=200)
+    description = models.TextField('Descripción', blank=True)
+    uploaded_at = models.DateTimeField('Fecha de subida', auto_now_add=True)
+    uploaded_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='uploaded_files',
+        verbose_name='Subido por'
+    )
+    activity = models.ForeignKey(
+        'Activity',
+        on_delete=models.CASCADE,
+        related_name='files',
+        verbose_name='Actividad'
+    )
+
+    class Meta:
+        verbose_name = 'Archivo de Actividad'
+        verbose_name_plural = 'Archivos de Actividades'
+        ordering = ['-uploaded_at']
+
+    def __str__(self):
+        return f"{self.title} - {self.activity.title}"
+
 class Activity(models.Model):
     ACTIVITY_TYPES = [
         ('CAPACITACION', 'Capacitación'),

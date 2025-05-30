@@ -29,6 +29,13 @@
                             Participantes
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'library' %}active{% endif %}" 
+                           href="{% url 'dashboard:library' %}">
+                            <i class="bi bi-book"></i>
+                            Biblioteca
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>

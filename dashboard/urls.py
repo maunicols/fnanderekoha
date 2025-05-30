@@ -14,4 +14,8 @@ urlpatterns = [
     path('participantes/', views.participant_list, name='participant-list'),
     path('actividades/<int:pk>/cambiar-estado/', views.activity_change_status, name='activity-change-status'),
     path('participantes/<int:participant_id>/confirmar/', views.confirm_attendance, name='confirm-attendance'),
+    path('activity/<int:pk>/', views.activity_detail, name='activity-detail'),
+    path('library/', views.library_view, name='library'),
+    path('upload-document/', views.upload_document, name='upload-document'),
+    path('download-document/<int:file_id>/', views.download_document, name='download-document'),
 ]

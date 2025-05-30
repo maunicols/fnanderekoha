@@ -114,7 +114,14 @@
                 aria-current="page"
                 href={% url "profile" %}
                 >Mi perfil</a>
-              </li>
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link text-dark active align-text-center fs-6"
+                aria-current="page"
+                href={% url "dashboard:home" %}
+                >Actividades</a>
+            </li>
             <li>
               <a class="nav-item ms-auto fs-6 btn btn-outline-dark  d-lg-none" href={% url 'logout' %} aria-current="true">Salir</a>
             </li>
