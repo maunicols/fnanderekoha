@@ -1,0 +1,138 @@
+{% extends "landing/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Contenido principal -->
+        <div class="col-lg-8">
+            <article>
+                <!-- Categorías y fecha -->
+                <div class="mb-4">
+                    {% for category in news.categories.all %}
+                    <a href="{% url 'news:news_by_category' category.slug %}" 
+                       class="badge bg-primary text-decoration-none me-2">
+                        {{ category.name }}
+                    </a>
+                    {% endfor %}
+                    <span class="text-muted">
+                        <i class="bi bi-calendar3 ms-2 me-1"></i>
+                        {{ news.published_at|date:"d M, Y" }}
+                    </span>
+                </div>
+
+                <!-- Título -->
+                <h1 class="display-4 fw-bold mb-4">{{ news.title }}</h1>
+
+                <!-- Autor -->
+                <div class="d-flex align-items-center mb-4">
+                    <div class="border rounded-circle p-2 me-3">
+                        <i class="bi bi-person-circle h3 m-0 text-primary"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{ news.author.get_full_name|default:news.author.username }}</h6>
+                        <small class="text-muted">Autor</small>
+                    </div>
+                </div>
+
+                <!-- Imagen destacada -->
+                {% if news.featured_image %}
+                <div class="position-relative mb-4">
+                    <img src="{{ news.featured_image.url }}" 
+                         class="img-fluid rounded shadow-sm w-100" 
+                         alt="{{ news.title }}"
+                         style="max-height: 500px; object-fit: cover;">
+                </div>
+                {% endif %}
+
+                <!-- Resumen -->
+                <div class="lead mb-4 p-4 bg-light rounded">
+                    {{ news.summary }}
+                </div>
+
+                <!-- Contenido principal -->
+                <div class="content mb-5">
+                    {{ news.content|safe|linebreaks }}
+                </div>
+
+                <!-- Compartir en redes sociales -->
+                <div class="bg-light p-4 rounded">
+                    <h5 class="mb-3">
+                        <i class="bi bi-share me-2"></i>Compartir esta noticia
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                           target="_blank" 
+                           class="btn btn-primary">
+                            <i class="bi bi-facebook me-2"></i>Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ news.title }}" 
+                           target="_blank" 
+                           class="btn btn-info text-white">
+                            <i class="bi bi-twitter me-2"></i>Twitter
+                        </a>
+                        <a href="https://wa.me/?text={{ news.title }}%20{{ request.build_absolute_uri }}" 
+                           target="_blank" 
+                           class="btn btn-success">
+                            <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Noticias recientes -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-clock-history me-2"></i>Otras noticias recientes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for news_item in recent_news %}
+                    <div class="d-flex mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                        {% if news_item.featured_image %}
+                        <img src="{{ news_item.featured_image.url }}" 
+                             class="rounded me-3" 
+                             alt="{{ news_item.title }}" 
+                             style="width: 64px; height: 64px; object-fit: cover;">
+                        {% endif %}
+                        <div>
+                            <h6 class="mb-1">
+                                <a href="{% url 'news:news_detail' news_item.slug %}" class="text-decoration-none">
+                                    {{ news_item.title|truncatechars:50 }}
+                                </a>
+                            </h6>
+                            <small class="text-muted">
+                                <i class="bi bi-calendar3 me-1"></i>
+                                {{ news_item.published_at|date:"d M, Y" }}
+                            </small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Volver a todas las noticias -->
+            <div class="text-center mt-4">
+                <a href="{% url 'news:news_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-2"></i>Ver todas las noticias
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos personalizados -->
+<style>
+    .content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+    .content p {
+        margin-bottom: 1.5rem;
+    }
+</style>
+{% endblock %}

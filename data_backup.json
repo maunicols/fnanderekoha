@@ -1,0 +1,289 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-05-27T20:13:28.191Z",
+    "user": 3,
+    "content_type": 4,
+    "object_id": "3",
+    "object_repr": "maunicols",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"name\": \"perfiles\", \"object\": \"Perfil de maunicols\", \"fields\": [\"Rol\"]}}]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$rKoCrvIn7Sym8N4jDN8qi2$Em7MK/veVbzZFL/SdXAWUUU6FGp1CjlxkbSnKSjLoHY=",
+    "last_login": "2025-05-28T18:06:35.923Z",
+    "is_superuser": true,
+    "username": "mauricio",
+    "first_name": "",
+    "last_name": "",
+    "email": "cruzmauricionicolas@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-05-20T13:15:48.338Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$MQ1UWsZL4UMgTX8LKlN81X$wRXGU9yQfFA7NG5dV5iG89/kV4QByLZZbkjAA9dlntw=",
+    "last_login": "2025-05-27T18:44:27.275Z",
+    "is_superuser": false,
+    "username": "laura",
+    "first_name": "",
+    "last_name": "",
+    "email": "lauradelvalle1985@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-05-20T13:16:45.503Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$PdO4cfzhQa1lFs3wr6zfAc$pgjGbZ2PC0sbpcfRyvH4q8B0EchKSU8dnNdslU7S4cE=",
+    "last_login": "2025-05-30T18:20:19.650Z",
+    "is_superuser": true,
+    "username": "maunicols",
+    "first_name": "",
+    "last_name": "",
+    "email": "cruzmauricionicolas@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-05-27T18:47:01Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$wGU21Ey3tplPa575BXQsPm$1aPgeJF2oPzwe/Au1qhlfYuQqu4TWCMb2PmoQEpMn9M=",
+    "last_login": "2025-05-27T19:02:41.667Z",
+    "is_superuser": false,
+    "username": "Laura",
+    "first_name": "",
+    "last_name": "",
+    "email": "lauradelvalle1985@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-05-27T19:02:34.789Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$WewdhegJeEbiFeWQLMYAzJ$xQuy98i3pH78ZHDDiO8PoHH5/B1auzvQcVTLQl0QJcI=",
+    "last_login": "2025-05-30T17:50:18.642Z",
+    "is_superuser": false,
+    "username": "ROBOTITO",
+    "first_name": "",
+    "last_name": "",
+    "email": "ROBOTITO@gpay.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-05-28T18:07:29.730Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8ddabvek5u8ivj59tlim6yr8eub3y297",
+  "fields": {
+    "session_data": "e30:1uJz7C:XL0r1QotgcTccoO5eJ1vvSvAR_MSpQJkJ1Af5dN0aSo",
+    "expire_date": "2025-06-10T18:33:30.527Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "acajua00nuix5wqek4pd3vjpla2abla0",
+  "fields": {
+    "session_data": "e30:1uJzVf:g6a-CxFESYG0DPGAL3wYSNlC4SY9FgJ_MUm4M00hbEI",
+    "expire_date": "2025-06-10T18:58:47.409Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dr29rn9fr8gmesuyhh4aw0czgf6pv0vu",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnB_6WkzxmstXeNA8iR4qRC3B0ipYD2zcx7iYjbWuPWeYkTiYvQ4vS7JcwPbjugO7bbLPPc1mVKclfkQbscZ-Ln9XD_Dir2-q3Zq-HsjS0B2SkmmzkY9FlbHYgzcLDJGF0yWQavIQVwkMARMasyOPH-AO9GOGQ:1uL4L5:7036lzrxIhUAwXWX_FWi6J0Nc20GZPpTP1abJ1Oz3jM",
+    "expire_date": "2025-06-13T18:20:19.669Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i4diaywl0x4uck57ydoxi76o3qmmzwlh",
+  "fields": {
+    "session_data": "e30:1uJzHn:gaH86V9ltj_n1dOjR6GwRB9d60pfXF2AyG-rddXzAlA",
+    "expire_date": "2025-06-10T18:44:27.263Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ieh7iksuab2pgcl7vkzvq0utz6x1e75c",
+  "fields": {
+    "session_data": "e30:1uKLAh:bN1_DfAA7VpOUR4sAQ9rMUTcw-HmAxBLYY8tmYPtmrA",
+    "expire_date": "2025-06-11T18:06:35.910Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jznq91i95sw8wwjb8amp8g0pr98pyraw",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnB_6WkzxmstXeNA8iR4qRC3B0ipYD2zcx7iYjbWuPWeYkTiYvQ4vS7JcwPbjugO7bbLPPc1mVKclfkQbscZ-Ln9XD_Dir2-q3Zq-HsjS0B2SkmmzkY9FlbHYgzcLDJGF0yWQavIQVwkMARMasyOPH-AO9GOGQ:1uJzL0:PNQ3z-EK11z6uiFICu5EvhvI0QJQaRj9PtGPQM5QVmA",
+    "expire_date": "2025-06-10T18:47:46.616Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mcz8rsce09q38to9qi9tnlghiaqg8k95",
+  "fields": {
+    "session_data": "e30:1uJzIR:J7JxtiT6E2p5KPob78tpCbnxBYtlFP_ylMFC4qVrqT8",
+    "expire_date": "2025-06-10T18:45:07.597Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mzxqwayu602fni34qqiw3j1hfjcsieuq",
+  "fields": {
+    "session_data": "e30:1uJzFq:vXpNBHjBS2-pPmLtCTlHHDWW2pocAHabOjl00D7betM",
+    "expire_date": "2025-06-10T18:42:26.223Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nqk3eboxad2hhfd2ykaitdv1kgoltv7b",
+  "fields": {
+    "session_data": "e30:1uJzCN:ONhxxQ4Iz1Wy586RfjBsCx4IvbIGVpZ5E6Lux9b_bHw",
+    "expire_date": "2025-06-10T18:38:51.436Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "szx4rjxza635nsq9ze4d9dzrjskn3vtg",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSFAh5dL934DGRiQqqFJaVfGf1eSLnR7zzn3xQLuWw17z2uYiZ0ZsNPvFjE9chuA7thuC09L29Y58qHwg3Z-XSg_L4f7d1Cx11Fbp4SPYDwYabJ3ZEGJot3kCDWkkgToIpWUk_9yG4uJROQ1kkpFIXt_AMA-N7M:1uJzZR:E0NNnJuO1_YBjzQPSII_TQZBL6PLIanMLJBG4pLueY8",
+    "expire_date": "2025-06-10T19:02:41.684Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "t03md9yfosz2kjl1xyvhb7stagckdxrp",
+  "fields": {
+    "session_data": "e30:1uJzJ5:j7mbWWCW4vUb5X-qZldaKCMSC_kycEaj0aQ950ZS0Z4",
+    "expire_date": "2025-06-10T18:45:47.364Z"
+  }
+},
+{
+  "model": "users.perfiles",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "image": "profile_pics/GATITO.jpg",
+    "role": "ADMIN"
+  }
+},
+{
+  "model": "users.perfiles",
+  "pk": 2,
+  "fields": {
+    "user": 4,
+    "image": "profile_pics/gatete.jpg",
+    "role": "USER"
+  }
+},
+{
+  "model": "users.perfiles",
+  "pk": 3,
+  "fields": {
+    "user": 5,
+    "image": "default.png",
+    "role": "USER"
+  }
+},
+{
+  "model": "dashboard.activityfile",
+  "pk": 1,
+  "fields": {
+    "file": "activity_files/2025/05/30/gatete.jpg",
+    "title": "Foto de un gatito",
+    "description": "Muy necesaria, alerta",
+    "uploaded_at": "2025-05-30T18:33:58.980Z",
+    "uploaded_by": 3,
+    "activity": 2
+  }
+},
+{
+  "model": "dashboard.activityfile",
+  "pk": 2,
+  "fields": {
+    "file": "activity_files/2025/05/30/GATITO.jpg",
+    "title": "Foto de un gatito más lindo...",
+    "description": "Es también FUNDAMENTAL",
+    "uploaded_at": "2025-05-30T19:58:13.806Z",
+    "uploaded_by": 3,
+    "activity": 2
+  }
+},
+{
+  "model": "dashboard.activity",
+  "pk": 2,
+  "fields": {
+    "title": "HOSPITAL MADARIAGA CAPACITACIÓN BÁSICA",
+    "description": "CAPACITACION BASICA DENTRO DEL SUM DEL HOSPITAL",
+    "activity_type": "CAPACITACION",
+    "date": "2025-05-29T19:00:00Z",
+    "location": "HOSPITAL DE AGUDOS RAMÓN MADARIAGA",
+    "capacity": 20,
+    "status": "EN_CURSO",
+    "created_at": "2025-05-28T18:06:04.884Z",
+    "updated_at": "2025-05-28T23:27:40.702Z",
+    "created_by": 3,
+    "attendance_managers": []
+  }
+},
+{
+  "model": "dashboard.participant",
+  "pk": 3,
+  "fields": {
+    "activity": 2,
+    "user": 3,
+    "name": "maunicols",
+    "email": "cruzmauricionicolas@gmail.com",
+    "phone": "123456789454",
+    "attendance_confirmed": true,
+    "notes": "",
+    "created_at": "2025-05-28T18:44:41.375Z"
+  }
+},
+{
+  "model": "dashboard.participant",
+  "pk": 4,
+  "fields": {
+    "activity": 2,
+    "user": 5,
+    "name": "ROBOTITO",
+    "email": "ROBOTITO@gpay.com",
+    "phone": "376484618",
+    "attendance_confirmed": true,
+    "notes": "",
+    "created_at": "2025-05-28T23:26:05.727Z"
+  }
+}
+]

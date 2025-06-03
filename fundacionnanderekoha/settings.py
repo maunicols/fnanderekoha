@@ -1,10 +1,9 @@
 from pathlib import Path
 import os 
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-#load .env file
-#load_dotenv()
-
+# load .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +34,7 @@ INSTALLED_APPS = [
     'landing',
     'users',
     'dashboard',
+    'news',
     #modules
     'crispy_forms',
     'crispy_bootstrap5',
@@ -81,8 +81,12 @@ WSGI_APPLICATION = 'fundacionnanderekoha.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'fnanderekoha_db'),
+        'USER': os.getenv('DB_USER', 'fnanderekoha_user'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'fnanderekoha_password'),
+        'HOST': os.getenv('DB_HOST', 'db'),
+        'PORT': os.getenv('DB_PORT', '5432'),
     }
 }
 
@@ -148,5 +152,6 @@ SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Auth settings
-LOGIN_REDIRECT_URL = 'landing-home'
+LOGIN_REDIRECT_URL = 'dashboard:home'  # Redirigir al dashboard después del login
 LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'landing-home'  # Redirigir al landing después del logout

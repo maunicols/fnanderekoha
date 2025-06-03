@@ -1,4 +1,16 @@
 services:
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=fnanderekoha_db
+      - POSTGRES_USER=fnanderekoha_user
+      - POSTGRES_PASSWORD=fnanderekoha_password
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
   web:
     build: 
       context: .
@@ -12,6 +24,13 @@ services:
       - DJANGO_SETTINGS_MODULE=fundacionnanderekoha.settings
       - PYTHONUNBUFFERED=1
       - SECRET_KEY=dev_secret_key
+      - DB_NAME=fnanderekoha_db
+      - DB_USER=fnanderekoha_user
+      - DB_PASSWORD=fnanderekoha_password
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      - db
     restart: unless-stopped
     command: gunicorn fundacionnanderekoha.wsgi:application --bind 0.0.0.0:8000 --workers 3
 
@@ -26,4 +45,7 @@ services:
     depends_on:
       - web
     restart: unless-stopped
-  
+
+volumes:
+  postgres_data:
+

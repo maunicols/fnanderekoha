@@ -78,8 +78,14 @@
                 aria-current="page"
                 href={% url 'landing-home' %}
                 >Inicio</a>
-              </li>
-              <li class="nav-item dropdown">
+            </li>
+            <li class="nav-item">
+              <a 
+                class="nav-link active align-text-center text-dark fs-5"
+                href={% url 'news:news_list' %}
+                >Noticias</a>
+            </li>
+            <li class="nav-item dropdown">
                 <a
                 class="nav-link text-dark dropdown-toggle align-text-center fs-5"
                 href="#"
