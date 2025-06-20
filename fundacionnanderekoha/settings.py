@@ -85,6 +85,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', os.getenv('PGDATABASE', 'fnanderekoha_db')),
         'USER': os.getenv('DB_USER', os.getenv('PGUSER', 'fnanderekoha_user')),
         'PASSWORD': os.getenv('DB_PASSWORD', os.getenv('PGPASSWORD', 'fnanderekoha_password')),
+        'URL': os.getenv('DATABASE_URL', os.getenv('DATABASE_URL', 'postgres://fnanderekoha_user:fnanderekoha_password@localhost:5432/fnanderekoha_db')),
         'HOST': os.getenv('DB_HOST', os.getenv('PGHOST', 'localhost')),
         'PORT': os.getenv('DB_PORT', os.getenv('PGPORT', '5432')),
     }
