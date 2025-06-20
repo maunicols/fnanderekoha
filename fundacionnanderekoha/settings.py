@@ -88,6 +88,7 @@ DATABASES = {
         'URL': os.getenv('DATABASE_URL', os.getenv('DATABASE_URL', 'postgres://fnanderekoha_user:fnanderekoha_password@localhost:5432/fnanderekoha_db')),
         'HOST': os.getenv('DB_HOST', os.getenv('PGHOST', 'localhost')),
         'PORT': os.getenv('DB_PORT', os.getenv('PGPORT', '5432')),
+        'CONN_MAX_AGE': 0,
     }
 }
 
