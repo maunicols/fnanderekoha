@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'fundacionnanderekoha.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'fnanderekoha_db'),
-        'USER': os.getenv('DB_USER', 'fnanderekoha_user'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'fnanderekoha_password'),
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': os.getenv('DB_NAME', os.getenv('PGDATABASE', 'fnanderekoha_db')),
+        'USER': os.getenv('DB_USER', os.getenv('PGUSER', 'fnanderekoha_user')),
+        'PASSWORD': os.getenv('DB_PASSWORD', os.getenv('PGPASSWORD', 'fnanderekoha_password')),
+        'HOST': os.getenv('DB_HOST', os.getenv('PGHOST', 'localhost')),
+        'PORT': os.getenv('DB_PORT', os.getenv('PGPORT', '5432')),
     }
 }
 
