@@ -1,6 +1,7 @@
 from pathlib import Path
 import os 
 from dotenv import load_dotenv
+import logging
 
 # load .env file
 load_dotenv()
@@ -18,7 +19,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'invalid_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG_ENABLED', 'False') # Ajusta esto según tu dominio
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://fnanderekoha-production.up.railway.app/'] # Ajusta esto según tu dominio
+# Log DEBUG status
+logger = logging.getLogger(__name__)
+logger.info(f"DEBUG mode is {'ENABLED' if DEBUG else 'DISABLED'}")
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://fnanderekoha-production.up.railway.app/' 'fnanderekoha-production.up.railway.app'] # Ajusta esto según tu dominio
 
 # Application definition
 
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Agregar WhiteNoise
+    'fundacionnanderekoha.middleware.DebugLogMiddleware',  # Custom debug logging middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
