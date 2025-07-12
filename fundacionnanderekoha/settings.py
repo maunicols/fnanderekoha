@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'invalid_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG_ENABLED', 'False') # Ajusta esto según tu dominio
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', "localhost, 127.0.0.1")  # Ajusta esto según tu dominio
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://fnanderekoha-production.up.railway.app/'] # Ajusta esto según tu dominio
 
 # Application definition
 
@@ -145,7 +145,7 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', "False")  # Set to True in production with HTTPS
-SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', "False")  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', "os.getenv('PGDATABASE', 'fnanderekoha_db')")  # Set to True in production with HTTPS
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
