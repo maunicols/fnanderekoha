@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-rye+1+0np^6080(_8zza^2w5((7fwjkjou==6s^09-24(l!zzz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fnanderekoha-production.up.railway.app']  # Ajusta esto según tu dominio
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fnanderekoha-production.up.railway.app', 'https://fnanderekoha-production.up.railway.app']  # Ajusta esto según tu dominio
 
 
 # Application definition
